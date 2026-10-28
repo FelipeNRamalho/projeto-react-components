@@ -2,7 +2,7 @@
 
 Projeto de estudo em **React para web**: um catálogo de filmes com filtros e favoritos, desenvolvido para praticar os conceitos básicos da biblioteca.
 
-> **Status:** estrutura inicial criada com React e Vite. A aplicação possui uma tela de apresentação; o catálogo, os filtros e os favoritos ainda serão implementados.
+> **Status:** catálogo básico implementado. A página lista seis filmes com título, gênero e ano. Pôsteres, favoritos e filtros serão adicionados nas próximas etapas.
 
 ## Objetivo
 
@@ -38,7 +38,18 @@ O filtro de gênero também será aplicado à visualização de favoritos.
 - HTML e CSS
 - Vite para desenvolvimento e build
 
-Os filmes serão definidos em um array local. A primeira versão não terá API, banco de dados ou login.
+Os filmes são definidos em um array local. A primeira versão não terá API, banco de dados ou login.
+
+## Etapas de implementação
+
+Cada etapa reúne uma mudança que pode ser revisada e commitada separadamente.
+
+- [x] Estrutura inicial com React e Vite.
+- [x] Dados locais e listagem com `CardFilme` e `ListaFilmes` — JSX, componentes, props e `.map()`.
+- [ ] Pôsteres dos filmes e apresentação visual dos cards.
+- [ ] Adicionar e remover favoritos com `useState` e indicação condicional no botão.
+- [ ] Filtrar por gênero e alternar a visualização de favoritos.
+- [ ] Mensagens de lista vazia e revisão de acessibilidade e responsividade.
 
 ## Estrutura de pastas
 
@@ -47,9 +58,13 @@ public/
   images/           # Imagens públicas, acessíveis por /images/nome-do-arquivo
 src/
   assets/           # Imagens e outros arquivos importados pelos componentes
-  components/       # Componentes reutilizáveis do catálogo
+  components/
+    CardFilme.jsx   # Dados e apresentação de cada filme
+    CardFilme.css
+    ListaFilmes.jsx # Lista de cards renderizada com .map()
+    ListaFilmes.css
   data/
-    filmes.js       # Array reservado aos dados dos filmes
+    filmes.js       # Array local com os dados dos filmes
   styles/
     global.css      # Estilos globais da aplicação
   App.jsx           # Componente principal
@@ -61,7 +76,7 @@ package.json        # Dependências e comandos do projeto
 vite.config.js      # Configuração do Vite com suporte a React
 ```
 
-As pastas de componentes e imagens começam vazias. Os arquivos `.gitkeep` permitem que elas sejam versionadas pelo Git e podem ser removidos quando receberem conteúdo.
+As pastas de imagens ainda estão vazias. Os arquivos `.gitkeep` permitem que elas sejam versionadas pelo Git e podem ser removidos quando receberem conteúdo.
 
 ## Componentes planejados
 
@@ -73,9 +88,9 @@ As pastas de componentes e imagens começam vazias. Os arquivos `.gitkeep` permi
 | `ListaFilmes` | Renderizar os filmes filtrados ou a mensagem de lista vazia. |
 | `CardFilme` | Exibir os dados de um filme e o botão de favoritar. |
 
-Cada filme terá um identificador único, título, gênero, ano de lançamento e caminho ou URL do pôster. Os favoritos serão controlados pelos identificadores dos filmes.
+Cada filme possui um identificador único, título, gênero e ano de lançamento. O caminho ou URL do pôster será adicionado na próxima etapa. Os favoritos serão controlados pelos identificadores dos filmes.
 
-## Fluxo de uso
+## Fluxo de uso planejado
 
 1. Ao abrir a página, o usuário visualiza todos os filmes cadastrados.
 2. Pode selecionar um gênero para filtrar o catálogo.
