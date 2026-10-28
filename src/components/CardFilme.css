@@ -1,9 +1,28 @@
 .card-filme {
+  display: flex;
+  flex-direction: column;
   height: 100%;
-  padding: 1.5rem;
+  overflow: hidden;
   border: 1px solid #e2e8f0;
-  border-radius: 12px;
+  border-radius: 16px;
   background-color: #fff;
+  box-shadow: 0 4px 16px rgb(15 23 42 / 6%);
+}
+
+.card-filme__poster {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  background-color: #e2e8f0;
+}
+
+.card-filme__conteudo {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 1.5rem;
 }
 
 .card-filme__genero {
@@ -13,6 +32,7 @@
   color: #3730a3;
   background-color: #eef2ff;
   font-size: 0.875rem;
+  font-weight: 600;
 }
 
 .card-filme__titulo {
@@ -22,6 +42,7 @@
 }
 
 .card-filme__ano {
-  margin: 0;
+  margin: auto 0 0;
+  padding-top: 0.5rem;
   color: #475569;
 }

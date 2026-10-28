@@ -2,7 +2,7 @@
 
 Projeto de estudo em **React para web**: um catálogo de filmes com filtros e favoritos, desenvolvido para praticar os conceitos básicos da biblioteca.
 
-> **Status:** catálogo básico implementado. A página lista seis filmes com título, gênero e ano. Pôsteres, favoritos e filtros serão adicionados nas próximas etapas.
+> **Status:** catálogo com pôsteres implementado. A página lista seis filmes em cards com imagem, título, gênero e ano, organizados em uma grade responsiva. Favoritos e filtros serão adicionados nas próximas etapas.
 
 ## Objetivo
 
@@ -46,7 +46,7 @@ Cada etapa reúne uma mudança que pode ser revisada e commitada separadamente.
 
 - [x] Estrutura inicial com React e Vite.
 - [x] Dados locais e listagem com `CardFilme` e `ListaFilmes` — JSX, componentes, props e `.map()`.
-- [ ] Pôsteres dos filmes e apresentação visual dos cards.
+- [x] Pôsteres dos filmes e apresentação visual dos cards.
 - [ ] Adicionar e remover favoritos com `useState` e indicação condicional no botão.
 - [ ] Filtrar por gênero e alternar a visualização de favoritos.
 - [ ] Mensagens de lista vazia e revisão de acessibilidade e responsividade.
@@ -55,7 +55,7 @@ Cada etapa reúne uma mudança que pode ser revisada e commitada separadamente.
 
 ```text
 public/
-  images/           # Imagens públicas, acessíveis por /images/nome-do-arquivo
+  images/           # Seis pôsteres locais, acessíveis por /images/nome-do-arquivo
 src/
   assets/           # Imagens e outros arquivos importados pelos componentes
   components/
@@ -76,7 +76,24 @@ package.json        # Dependências e comandos do projeto
 vite.config.js      # Configuração do Vite com suporte a React
 ```
 
-As pastas de imagens ainda estão vazias. Os arquivos `.gitkeep` permitem que elas sejam versionadas pelo Git e podem ser removidos quando receberem conteúdo.
+A pasta `src/assets/` continua reservada para arquivos importados pelos componentes. Seu `.gitkeep` permite versioná-la enquanto estiver vazia.
+
+## Pôsteres dos filmes
+
+As imagens estão salvas em `public/images/`, com resolução de 500 × 750 pixels. O campo `poster` de cada filme aponta para seu arquivo local, sem consultas a uma API durante o uso da aplicação.
+
+Os cards apresentam texto alternativo, carregamento de imagens sob demanda (`loading="lazy"`) e proporção reservada de 2:3. A grade exibe três colunas em telas grandes, duas em telas intermediárias e uma em telas pequenas.
+
+Fontes das imagens, obtidas do servidor de imagens do TMDB:
+
+| Filme | Imagem original |
+| --- | --- |
+| A Origem | [Pôster](https://image.tmdb.org/t/p/w500/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg) |
+| Interestelar | [Pôster](https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg) |
+| Toy Story | [Pôster](https://image.tmdb.org/t/p/w500/uXDfjJbdP4ijW5hWSBrPrlKpxab.jpg) |
+| Shrek | [Pôster](https://image.tmdb.org/t/p/w500/iB64vpL3dIObOtMZgX3RqdVdQDc.jpg) |
+| De Volta para o Futuro | [Pôster](https://image.tmdb.org/t/p/w500/7lyBcpYB0Qt8gYhXYaEZUNlNQAv.jpg) |
+| Jurassic Park | [Pôster](https://image.tmdb.org/t/p/w500/oU7Oq2kFAAlGqbU4VoAE36g4hoI.jpg) |
 
 ## Componentes planejados
 
@@ -88,7 +105,7 @@ As pastas de imagens ainda estão vazias. Os arquivos `.gitkeep` permitem que el
 | `ListaFilmes` | Renderizar os filmes filtrados ou a mensagem de lista vazia. |
 | `CardFilme` | Exibir os dados de um filme e o botão de favoritar. |
 
-Cada filme possui um identificador único, título, gênero e ano de lançamento. O caminho ou URL do pôster será adicionado na próxima etapa. Os favoritos serão controlados pelos identificadores dos filmes.
+Cada filme possui um identificador único, título, gênero, ano de lançamento e caminho do pôster local. Os favoritos serão controlados pelos identificadores dos filmes.
 
 ## Fluxo de uso planejado
 
