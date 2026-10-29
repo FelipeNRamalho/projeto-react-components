@@ -1,6 +1,6 @@
 # Próximas tarefas
 
-Plano de evolução do catálogo de filmes. A primeira versão e T01 a T03 estão concluídas; T04 a T10 continuam pendentes.
+Plano de evolução do catálogo de filmes. A primeira versão e T01 a T04 estão concluídas; T05 a T10 continuam pendentes.
 
 Implementar uma tarefa por vez, mantendo a aplicação funcional e deixando cada entrega pronta para um commit separado. Atualizar o README e marcar a tarefa ao concluí-la. Os commits serão feitos pelo usuário.
 
@@ -11,7 +11,7 @@ O projeto já usa estado com `useState`. As próximas tarefas ampliam esse uso c
 - [x] T01 — Formulário de busca por título.
 - [x] T02 — Persistência dos favoritos.
 - [x] T03 — Navegação com React Router.
-- [ ] T04 — Página de detalhes com dados locais.
+- [x] T04 — Página de detalhes com dados locais.
 - [ ] T05 — Formulário de avaliação pessoal.
 - [ ] T06 — Persistência das avaliações.
 - [ ] T07 — Modelo de filmes preparado para API.

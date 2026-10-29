@@ -1,3 +1,5 @@
+import { Link } from 'react-router'
+import BotaoFavorito from './BotaoFavorito.jsx'
 import './CardFilme.css'
 
 export default function CardFilme({ filme, favorito, onAlternarFavorito }) {
@@ -16,20 +18,15 @@ export default function CardFilme({ filme, favorito, onAlternarFavorito }) {
       <div className="card-filme__conteudo">
         <span className="card-filme__genero">{filme.genero}</span>
         <h3 className="card-filme__titulo" id={`filme-${filme.id}`}>
-          {filme.titulo}
+          <Link to={`/filmes/${filme.id}`}>{filme.titulo}</Link>
         </h3>
         <p className="card-filme__ano">Lançamento: {filme.ano}</p>
-        <button
+        <BotaoFavorito
           className="card-filme__favorito"
-          type="button"
-          aria-label={`Favorito: ${filme.titulo}`}
-          aria-pressed={favorito}
-          title={favorito ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}
-          onClick={() => onAlternarFavorito(filme.id)}
-        >
-          <span aria-hidden="true">{favorito ? '♥' : '♡'}</span>
-          Favorito
-        </button>
+          filme={filme}
+          favorito={favorito}
+          onAlternarFavorito={onAlternarFavorito}
+        />
       </div>
     </article>
   )

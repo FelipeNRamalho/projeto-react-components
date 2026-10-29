@@ -1,0 +1,56 @@
+.detalhes-filme {
+  display: grid;
+  grid-template-columns: minmax(200px, 300px) minmax(0, 1fr);
+  align-items: start;
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.detalhes-filme__poster {
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: 16px;
+  background-color: #e2e8f0;
+}
+
+.detalhes-filme__ficha {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 2rem;
+  margin: 0;
+}
+
+.detalhes-filme__ficha dt {
+  margin-bottom: 0.25rem;
+  color: #475569;
+  font-size: 0.875rem;
+}
+
+.detalhes-filme__ficha dd {
+  margin: 0;
+  font-weight: 600;
+}
+
+.detalhes-filme__subtitulo {
+  margin: 1.5rem 0 0.5rem;
+}
+
+.detalhes-filme__sinopse {
+  margin: 0;
+  color: #475569;
+}
+
+.detalhes-filme__acoes {
+  max-width: 320px;
+  margin-top: 1.5rem;
+}
+
+@media (max-width: 640px) {
+  .detalhes-filme {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+  }
+}

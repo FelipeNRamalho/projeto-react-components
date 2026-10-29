@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { NavLink, Route, Routes } from 'react-router'
 import Catalogo from './pages/Catalogo.jsx'
+import DetalhesFilme from './pages/DetalhesFilme.jsx'
 import Favoritos from './pages/Favoritos.jsx'
 import PaginaNaoEncontrada from './pages/PaginaNaoEncontrada.jsx'
 import { carregarFavoritos, salvarFavoritos } from './utils/favoritosStorage.js'
@@ -50,6 +51,15 @@ export default function App() {
             path="/favoritos"
             element={
               <Favoritos
+                favoritos={favoritos}
+                onAlternarFavorito={alternarFavorito}
+              />
+            }
+          />
+          <Route
+            path="/filmes/:id"
+            element={
+              <DetalhesFilme
                 favoritos={favoritos}
                 onAlternarFavorito={alternarFavorito}
               />

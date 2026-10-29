@@ -47,35 +47,25 @@
   color: #475569;
 }
 
-.card-filme__favorito {
+.card-filme__titulo a {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  width: 100%;
   min-height: 44px;
-  margin-top: 1.25rem;
-  padding: 0.625rem 1rem;
-  border: 1px solid #cbd5e1;
-  border-radius: 8px;
-  color: #475569;
-  background-color: #fff;
-  font-weight: 600;
-  cursor: pointer;
+  color: inherit;
+  text-decoration-color: #cbd5e1;
+  text-underline-offset: 4px;
 }
 
-.card-filme__favorito:hover {
-  border-color: #6366f1;
-  background-color: #eef2ff;
-}
-
-.card-filme__favorito[aria-pressed='true'] {
-  border-color: #4f46e5;
+.card-filme__titulo a:hover {
   color: #3730a3;
-  background-color: #e0e7ff;
+  text-decoration-color: currentColor;
 }
 
-.card-filme__favorito:focus-visible {
+.card-filme__titulo a:focus-visible {
   outline: 3px solid #4f46e5;
   outline-offset: 3px;
+}
+
+.card-filme__favorito {
+  margin-top: 1.25rem;
 }
