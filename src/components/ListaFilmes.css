@@ -25,7 +25,10 @@
   color: #475569;
 }
 
-.lista-filmes__vazia button {
+.lista-filmes__retorno {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   max-width: 100%;
   min-height: 44px;
   padding: 0.625rem 1rem;
@@ -34,14 +37,15 @@
   color: #fff;
   background-color: #4f46e5;
   font-weight: 600;
+  text-decoration: none;
   cursor: pointer;
 }
 
-.lista-filmes__vazia button:hover {
+.lista-filmes__retorno:hover {
   background-color: #4338ca;
 }
 
-.lista-filmes__vazia button:focus-visible {
+.lista-filmes__retorno:focus-visible {
   outline: 3px solid #4f46e5;
   outline-offset: 3px;
 }

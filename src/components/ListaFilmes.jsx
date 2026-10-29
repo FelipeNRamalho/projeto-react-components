@@ -1,3 +1,4 @@
+import { Link } from 'react-router'
 import CardFilme from './CardFilme.jsx'
 import './ListaFilmes.css'
 
@@ -33,9 +34,19 @@ export default function ListaFilmes({
       <div className="lista-filmes__vazia">
         <h3>{titulo}</h3>
         <p>{descricao}</p>
-        <button type="button" onClick={onLimparFiltros}>
-          Ver todos os filmes
-        </button>
+        {somenteFavoritos ? (
+          <Link className="lista-filmes__retorno" to="/">
+            Ver todos os filmes
+          </Link>
+        ) : (
+          <button
+            className="lista-filmes__retorno"
+            type="button"
+            onClick={onLimparFiltros}
+          >
+            Ver todos os filmes
+          </button>
+        )}
       </div>
     )
   }

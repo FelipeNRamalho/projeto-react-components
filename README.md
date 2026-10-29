@@ -2,11 +2,11 @@
 
 Projeto de estudo em **React para web**: um catálogo de filmes com filtros e favoritos, desenvolvido para praticar os conceitos básicos da biblioteca.
 
-> **Status:** primeira versão, T01 e T02 concluídas, com busca por título combinada aos filtros e favoritos persistidos no navegador. A interface inclui mensagens de lista vazia, adaptação para telas pequenas e cuidados com navegação por teclado.
+> **Status:** primeira versão e T01 a T03 concluídas, com páginas de catálogo e favoritos, busca por título, filtro de gênero e favoritos persistidos no navegador. A interface inclui mensagens de lista vazia, adaptação para telas pequenas e cuidados com navegação por teclado.
 
 ## Objetivo
 
-Criar uma aplicação simples, com uma única página, que permita explorar filmes e marcar os preferidos. O projeto deve demonstrar JSX, componentes, props, Virtual DOM, listas e renderização condicional.
+Criar uma aplicação simples que permita explorar filmes e marcar os preferidos. O projeto demonstra JSX, componentes, props, Virtual DOM, listas, renderização condicional, estado, formulários, efeitos e navegação com React Router.
 
 ## Funcionalidades
 
@@ -15,12 +15,13 @@ Criar uma aplicação simples, com uma única página, que permita explorar film
 - Adicionar e remover filmes dos favoritos.
 - Restaurar os favoritos ao recarregar a página usando `localStorage`.
 - Filtrar os filmes por gênero, incluindo a opção de exibir todos.
-- Alternar entre o catálogo completo e apenas os favoritos.
+- Navegar entre o catálogo completo e a página de favoritos sem recarregar a aplicação.
+- Exibir uma página para endereços inexistentes, com link de retorno ao catálogo.
 - Exibir uma mensagem quando nenhum filme corresponder aos filtros.
 - Voltar ao catálogo completo pelo botão da lista vazia, preservando os favoritos.
 - Adaptar a apresentação para telas de computador e celular.
 
-O filtro de gênero também será aplicado à visualização de favoritos.
+Busca e filtro de gênero estão disponíveis nas duas páginas.
 
 ## Conceitos de React
 
@@ -35,10 +36,12 @@ O filtro de gênero também será aplicado à visualização de favoritos.
 | **Estado com `useState`** | Controlar os favoritos, os filtros, o texto digitado e o termo de busca aplicado. |
 | **Efeitos com `useEffect`** | Sincronizar os favoritos com o `localStorage` quando a seleção muda. |
 | **Formulários controlados** | Manter o campo de busca sincronizado com o estado e tratar o envio com `onSubmit` e `preventDefault`. |
+| **React Router** | Usar `BrowserRouter`, `Routes` e `Route` para as páginas, `NavLink` no menu e `Link` nas ações de retorno. |
 
 ## Tecnologias
 
 - React
+- React Router
 - JavaScript com JSX
 - HTML e CSS
 - Vite para desenvolvimento e build
@@ -60,7 +63,7 @@ Cada etapa reúne uma mudança que pode ser revisada e commitada separadamente.
 
 O planejamento da próxima versão está em [TASKS.md](./TASKS.md), com tarefas em ordem de execução, critérios de conclusão e uma sugestão de commit para cada entrega.
 
-T01 (busca por título) e T02 (persistência dos favoritos) estão concluídas. As próximas tarefas incluem páginas com React Router, avaliações por formulário e sua persistência. Depois, adicionam consumo de API, estados de carregamento e tratamento de erros. As tarefas restantes continuam pendentes.
+T01 (busca por título), T02 (persistência dos favoritos) e T03 (React Router) estão concluídas. As próximas tarefas incluem detalhes dos filmes, avaliações por formulário e sua persistência. Depois, adicionam consumo de API, estados de carregamento e tratamento de erros. As tarefas restantes continuam pendentes.
 
 ## Estrutura de pastas
 
@@ -75,18 +78,22 @@ src/
     CardFilme.jsx   # Dados e apresentação de cada filme
     CardFilme.css
     FiltroGenero.jsx    # Seleção de gênero
-    FiltroFavoritos.jsx # Opção de mostrar apenas favoritos
     Filtros.css         # Estilos dos controles de filtro
     ListaFilmes.jsx # Lista de cards renderizada com .map()
     ListaFilmes.css
+    PaginaFilmes.jsx # Busca, gênero e listagem compartilhados pelas páginas
   data/
     filmes.js       # Array local com os dados dos filmes
+  pages/
+    Catalogo.jsx
+    Favoritos.jsx
+    PaginaNaoEncontrada.jsx
   styles/
     global.css      # Estilos globais da aplicação
   utils/
     favoritosStorage.js # Leitura, validação e gravação dos favoritos
-  App.jsx           # Componente principal
-  main.jsx          # Entrada do React e montagem no DOM
+  App.jsx           # Layout, rotas e estado compartilhado de favoritos
+  main.jsx          # Entrada do React com BrowserRouter
 .gitignore
 index.html          # Documento HTML que recebe a aplicação
 package-lock.json   # Versões das dependências instaladas
@@ -117,20 +124,32 @@ Fontes das imagens, obtidas do servidor de imagens do TMDB:
 
 | Componente | Responsabilidade |
 | --- | --- |
-| `App` | Manter o estado e reunir os componentes da página. |
+| `App` | Manter os favoritos, o cabeçalho compartilhado, o menu e as rotas. |
+| `PaginaFilmes` | Reunir busca, filtro de gênero e listagem para catálogo e favoritos. |
 | `BuscaFilmes` | Controlar a entrada por props e oferecer envio e limpeza da busca. |
 | `FiltroGenero` | Permitir a seleção do gênero. |
-| `FiltroFavoritos` | Controlar a exibição de apenas favoritos. |
 | `ListaFilmes` | Renderizar os filmes filtrados ou a mensagem de lista vazia. |
 | `CardFilme` | Exibir os dados de um filme e o botão de favoritar. |
 
 Cada filme possui um identificador único, título, gênero, ano de lançamento e caminho do pôster local. Os favoritos são controlados pelos identificadores dos filmes.
 
+## Páginas e navegação
+
+| Endereço | Página |
+| --- | --- |
+| `/` | Catálogo completo, com busca e filtro de gênero. |
+| `/favoritos` | Filmes marcados como favoritos, também com busca e gênero. |
+| Qualquer outro endereço | Página não encontrada, com link para o catálogo. |
+
+O `BrowserRouter` envolve a aplicação em `main.jsx`, e o `App` associa os caminhos às páginas com `Routes` e `Route`. O cabeçalho permanece visível nas três páginas. Os links `NavLink` destacam a página atual e informam sua seleção com `aria-current="page"`. A navegação não recarrega o documento e permite usar voltar e avançar do navegador. [Documentação do React Router](https://reactrouter.com/start/declarative/routing).
+
+As páginas `Catalogo` e `Favoritos` reutilizam `PaginaFilmes`. O checkbox de mostrar apenas favoritos foi substituído pelo link **Favoritos** no menu. O estado dos favoritos permanece acima das rotas, no `App`; busca e gênero são locais a cada página e reiniciam ao trocar de página ou recarregar. O título do documento e o foco no título da página são atualizados ao entrar em cada uma.
+
 ## Favoritos
 
 O `App` mantém os identificadores dos filmes favoritos em um estado criado com `useState`. A função `alternarFavorito` adiciona ou remove um identificador usando a atualização funcional do estado, sem modificar o array anterior.
 
-O estado e a função são passados por props para `ListaFilmes` e `CardFilme`. Ao clicar no botão **Favorito**, o coração e as cores do botão mudam conforme a seleção. O atributo `aria-pressed` informa o estado aos leitores de tela, e o botão pode ser acionado pelo teclado.
+O estado e a função são passados por props para as páginas e, por meio de `PaginaFilmes`, para `ListaFilmes` e `CardFilme`. Ao clicar no botão **Favorito**, o coração e as cores do botão mudam conforme a seleção. O atributo `aria-pressed` informa o estado aos leitores de tela, e o botão pode ser acionado pelo teclado.
 
 Os favoritos são restaurados pelo inicializador do `useState`, passando a função `carregarFavoritos` sem executá-la a cada renderização. Um `useEffect` com a dependência `[favoritos]` grava a seleção sempre que ela muda. Assim, a leitura acontece antes da primeira gravação e evita substituir os favoritos salvos por um array vazio.
 
@@ -140,15 +159,15 @@ Se o navegador bloquear o armazenamento ou não houver espaço para gravar, a ap
 
 ## Busca por título
 
-O componente `BuscaFilmes` recebe o texto digitado e as ações por props. O `App` mantém dois estados: `textoBusca`, atualizado enquanto o usuário digita, e `termoBusca`, aplicado somente ao enviar o formulário pelo botão **Buscar** ou pela tecla Enter. O `preventDefault` evita o recarregamento da página.
+O componente `BuscaFilmes` recebe o texto digitado e as ações por props. A `PaginaFilmes` mantém dois estados: `textoBusca`, atualizado enquanto o usuário digita, e `termoBusca`, aplicado somente ao enviar o formulário pelo botão **Buscar** ou pela tecla Enter. O `preventDefault` evita o recarregamento da página.
 
 A busca encontra trechos do título, ignora maiúsculas, minúsculas e espaços nas extremidades e combina o termo aplicado com gênero e favoritos. O contador também informa o termo aplicado, mesmo se o usuário estiver digitando uma nova pesquisa.
 
-Enviar uma busca vazia remove apenas a restrição por título. O botão **Limpar busca** apaga tanto o texto digitado quanto o termo aplicado, preserva gênero e favoritos e devolve o foco ao campo de pesquisa.
+Enviar uma busca vazia remove apenas a restrição por título. O botão **Limpar busca** apaga tanto o texto digitado quanto o termo aplicado, preserva o gênero e a página atual e devolve o foco ao campo de pesquisa.
 
 ## Filtros
 
-O `App` controla o gênero selecionado e a opção de mostrar apenas favoritos com `useState`. Os componentes `FiltroGenero` e `FiltroFavoritos` recebem os valores e as funções de atualização por props, mantendo os controles sincronizados com o estado.
+A `PaginaFilmes` controla o gênero selecionado com `useState` e o passa para `FiltroGenero` por props. A página de favoritos informa `somenteFavoritos` à listagem compartilhada, sem precisar de um checkbox para alternar a visualização.
 
 Os gêneros são extraídos do array de filmes, sem repetições e em ordem alfabética. A opção **Todos os gêneros** remove a restrição de gênero.
 
@@ -165,7 +184,7 @@ A `ListaFilmes` usa renderização condicional para substituir a grade por uma m
 - **Nenhum filme encontrado:** não há filmes para os demais critérios de exibição.
 - **Nenhum filme encontrado para esta busca** ou **Nenhum favorito encontrado para esta busca:** o termo aplicado não tem resultados na combinação atual de filtros.
 
-O botão **Ver todos os filmes** limpa gênero, visualização de favoritos e busca (texto digitado e termo aplicado), preserva os favoritos e leva o foco ao título do catálogo. Ao remover um filme na visualização de favoritos, o foco também vai para esse título, pois o botão do card sai da página. O `useRef` permite acessar esse elemento sem criar um novo estado.
+A ação **Ver todos os filmes** limpa gênero e busca quando acionada no catálogo. Na página de favoritos, ela é um `Link` para `/`, que abre o catálogo com os filtros iniciais. As duas ações preservam os favoritos e levam o foco ao título da página. Ao remover um filme na página de favoritos, o foco também vai para esse título, pois o botão do card sai da página. O `useRef` permite acessar esse elemento sem criar um novo estado.
 
 Os controles possuem rótulos, foco visível e acionamento por teclado. O contador usa `role="status"` para anunciar alterações, os pôsteres possuem texto alternativo e cada card é identificado por seu título. A lista mantém seu papel semântico mesmo com os marcadores ocultos.
 
@@ -176,11 +195,11 @@ Em telas pequenas, os filtros ficam empilhados e ocupam a largura disponível. A
 1. Ao abrir a página, o usuário visualiza todos os filmes cadastrados.
 2. Pode enviar uma busca por título e selecionar um gênero para filtrar o catálogo.
 3. Pode marcar ou desmarcar um filme como favorito pelo card.
-4. Ao ativar a opção de favoritos, a lista mostra apenas os filmes marcados que correspondem ao gênero selecionado.
+4. Pelo link **Favoritos**, acessa uma página com os filmes marcados e pode pesquisar ou filtrar essa seleção.
 5. O contador informa a quantidade de filmes que correspondem aos filtros.
 6. Se a lista estiver vazia, uma mensagem explica a situação e oferece o botão para voltar ao catálogo completo.
 
-Os favoritos são persistidos no navegador. Os filtros e a busca continuam apenas em memória e são reiniciados ao recarregar a página.
+Os favoritos são persistidos no navegador. O gênero e a busca continuam apenas em memória e são reiniciados ao trocar de página ou recarregar.
 
 ## Como executar
 
@@ -212,4 +231,6 @@ Para visualizar a versão de produção localmente, após o build:
 npm run preview
 ```
 
-Referências: [documentação do React](https://react.dev/learn) e [guia do Vite](https://vite.dev/guide/).
+O servidor de desenvolvimento permite abrir diretamente `http://localhost:5173/favoritos` e recarregar a rota. Ao publicar em hospedagem estática, configure o serviço para servir `index.html` nas rotas da aplicação, preservando o acesso aos arquivos de `assets/` e `images/`.
+
+Referências: [documentação do React](https://react.dev/learn), [React Router](https://reactrouter.com/start/declarative/installation) e [guia do Vite](https://vite.dev/guide/).
