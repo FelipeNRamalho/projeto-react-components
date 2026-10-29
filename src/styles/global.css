@@ -54,7 +54,32 @@ img {
   color: #475569;
 }
 
+.app__titulo-catalogo:focus-visible {
+  outline: 3px solid #4f46e5;
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+h1,
+h2,
+h3,
+p {
+  overflow-wrap: anywhere;
+}
+
 h1 {
   margin-top: 0;
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
   line-height: 1.2;
+}
+
+@media (max-width: 560px) {
+  .app {
+    padding: 2rem 0;
+  }
+
+  .app__filtros {
+    flex-direction: column;
+    align-items: stretch;
+  }
 }

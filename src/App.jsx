@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import FiltroFavoritos from './components/FiltroFavoritos.jsx'
 import FiltroGenero from './components/FiltroGenero.jsx'
 import ListaFilmes from './components/ListaFilmes.jsx'
@@ -12,6 +12,7 @@ export default function App() {
   const [favoritos, setFavoritos] = useState([])
   const [generoSelecionado, setGeneroSelecionado] = useState('')
   const [somenteFavoritos, setSomenteFavoritos] = useState(false)
+  const tituloCatalogoRef = useRef(null)
 
   const filmesFiltrados = filmes.filter((filme) => {
     const correspondeAoGenero =
@@ -28,6 +29,16 @@ export default function App() {
         ? favoritosAtuais.filter((id) => id !== filmeId)
         : [...favoritosAtuais, filmeId],
     )
+
+    if (somenteFavoritos) {
+      tituloCatalogoRef.current?.focus()
+    }
+  }
+
+  function limparFiltros() {
+    setGeneroSelecionado('')
+    setSomenteFavoritos(false)
+    tituloCatalogoRef.current?.focus()
   }
 
   return (
@@ -50,7 +61,12 @@ export default function App() {
       </div>
 
       <section aria-labelledby="titulo-catalogo">
-        <h2 id="titulo-catalogo">
+        <h2
+          id="titulo-catalogo"
+          className="app__titulo-catalogo"
+          ref={tituloCatalogoRef}
+          tabIndex={-1}
+        >
           {somenteFavoritos ? 'Meus favoritos' : 'Catálogo'}
         </h2>
         <p className="app__resultados" role="status">
@@ -62,6 +78,9 @@ export default function App() {
           filmes={filmesFiltrados}
           favoritos={favoritos}
           onAlternarFavorito={alternarFavorito}
+          somenteFavoritos={somenteFavoritos}
+          generoSelecionado={generoSelecionado}
+          onLimparFiltros={limparFiltros}
         />
       </section>
     </main>

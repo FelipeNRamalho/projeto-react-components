@@ -2,19 +2,20 @@
 
 Projeto de estudo em **React para web**: um catálogo de filmes com filtros e favoritos, desenvolvido para praticar os conceitos básicos da biblioteca.
 
-> **Status:** catálogo com pôsteres, favoritos e filtros implementado. É possível combinar o gênero selecionado com a opção de mostrar apenas favoritos. A próxima etapa será adicionar mensagens de lista vazia e revisar acessibilidade e responsividade.
+> **Status:** primeira versão implementada, com catálogo, pôsteres, favoritos, filtros combinados e mensagens de lista vazia. A interface inclui adaptação para telas pequenas e cuidados com navegação por teclado.
 
 ## Objetivo
 
 Criar uma aplicação simples, com uma única página, que permita explorar filmes e marcar os preferidos. O projeto deve demonstrar JSX, componentes, props, Virtual DOM, listas e renderização condicional.
 
-## Funcionalidades planejadas
+## Funcionalidades
 
 - Exibir cards com pôster, título, gênero e ano de lançamento.
 - Adicionar e remover filmes dos favoritos.
 - Filtrar os filmes por gênero, incluindo a opção de exibir todos.
 - Alternar entre o catálogo completo e apenas os favoritos.
 - Exibir uma mensagem quando nenhum filme corresponder aos filtros.
+- Voltar ao catálogo completo pelo botão da lista vazia, preservando os favoritos.
 - Adaptar a apresentação para telas de computador e celular.
 
 O filtro de gênero também será aplicado à visualização de favoritos.
@@ -49,7 +50,7 @@ Cada etapa reúne uma mudança que pode ser revisada e commitada separadamente.
 - [x] Pôsteres dos filmes e apresentação visual dos cards.
 - [x] Adicionar e remover favoritos com `useState` e indicação condicional no botão.
 - [x] Filtrar por gênero e alternar a visualização de favoritos.
-- [ ] Mensagens de lista vazia e revisão de acessibilidade e responsividade.
+- [x] Mensagens de lista vazia e revisão de acessibilidade e responsividade.
 
 ## Estrutura de pastas
 
@@ -98,7 +99,7 @@ Fontes das imagens, obtidas do servidor de imagens do TMDB:
 | De Volta para o Futuro | [Pôster](https://image.tmdb.org/t/p/w500/7lyBcpYB0Qt8gYhXYaEZUNlNQAv.jpg) |
 | Jurassic Park | [Pôster](https://image.tmdb.org/t/p/w500/oU7Oq2kFAAlGqbU4VoAE36g4hoI.jpg) |
 
-## Componentes planejados
+## Componentes
 
 | Componente | Responsabilidade |
 | --- | --- |
@@ -126,7 +127,21 @@ Os gêneros são extraídos do array de filmes, sem repetições e em ordem alfa
 
 A lista exibida é calculada com `.filter()`, combinando os dois critérios. Trocar os filtros preserva os favoritos já marcados. Ao desmarcar um filme na visualização de favoritos, ele sai imediatamente da lista.
 
-O título identifica a visualização atual, e um contador informa a quantidade de resultados. Mensagens específicas para listas vazias serão adicionadas na próxima etapa.
+O título identifica a visualização atual, e um contador informa a quantidade de resultados.
+
+## Listas vazias e acessibilidade
+
+A `ListaFilmes` usa renderização condicional para substituir a grade por uma mensagem quando não há resultados:
+
+- **Você ainda não tem favoritos:** a visualização de favoritos está ativa, sem filmes marcados.
+- **Nenhum favorito neste gênero:** não há favoritos que correspondam ao gênero selecionado.
+- **Nenhum filme encontrado:** não há filmes para os demais critérios de exibição.
+
+O botão **Ver todos os filmes** limpa os dois filtros, preserva os favoritos e leva o foco ao título do catálogo. Ao remover um filme na visualização de favoritos, o foco também vai para esse título, pois o botão do card sai da página. O `useRef` permite acessar esse elemento sem criar um novo estado.
+
+Os controles possuem rótulos, foco visível e acionamento por teclado. O contador usa `role="status"` para anunciar alterações, os pôsteres possuem texto alternativo e cada card é identificado por seu título. A lista mantém seu papel semântico mesmo com os marcadores ocultos.
+
+Em telas pequenas, os filtros ficam empilhados e ocupam a largura disponível. A grade possui uma, duas ou três colunas conforme a largura da tela, e os textos podem quebrar linha para acomodar a ampliação da fonte.
 
 ## Fluxo de uso
 
@@ -135,6 +150,7 @@ O título identifica a visualização atual, e um contador informa a quantidade 
 3. Pode marcar ou desmarcar um filme como favorito pelo card.
 4. Ao ativar a opção de favoritos, a lista mostra apenas os filmes marcados que correspondem ao gênero selecionado.
 5. O contador informa a quantidade de filmes que correspondem aos filtros.
+6. Se a lista estiver vazia, uma mensagem explica a situação e oferece o botão para voltar ao catálogo completo.
 
 Na primeira versão, os favoritos e filtros ficarão apenas na memória da aplicação e serão reiniciados ao recarregar a página.
 

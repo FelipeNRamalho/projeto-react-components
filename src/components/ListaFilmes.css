@@ -7,6 +7,45 @@
   list-style: none;
 }
 
+.lista-filmes__vazia {
+  padding: clamp(1.25rem, 4vw, 3rem);
+  border: 1px dashed #94a3b8;
+  border-radius: 16px;
+  background-color: #fff;
+  text-align: center;
+}
+
+.lista-filmes__vazia h3 {
+  margin-top: 0;
+}
+
+.lista-filmes__vazia p {
+  max-width: 48ch;
+  margin: 0 auto 1.5rem;
+  color: #475569;
+}
+
+.lista-filmes__vazia button {
+  max-width: 100%;
+  min-height: 44px;
+  padding: 0.625rem 1rem;
+  border: 1px solid #4f46e5;
+  border-radius: 8px;
+  color: #fff;
+  background-color: #4f46e5;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.lista-filmes__vazia button:hover {
+  background-color: #4338ca;
+}
+
+.lista-filmes__vazia button:focus-visible {
+  outline: 3px solid #4f46e5;
+  outline-offset: 3px;
+}
+
 @media (max-width: 900px) {
   .lista-filmes {
     grid-template-columns: repeat(2, minmax(0, 1fr));

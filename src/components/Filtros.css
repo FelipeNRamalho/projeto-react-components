@@ -3,6 +3,7 @@
   flex: 1 1 220px;
   flex-direction: column;
   gap: 0.5rem;
+  min-width: 0;
   max-width: 320px;
   font-weight: 600;
 }
@@ -43,4 +44,11 @@
 .filtro-favoritos__checkbox:focus-visible {
   outline: 3px solid #4f46e5;
   outline-offset: 3px;
+}
+
+@media (max-width: 560px) {
+  .filtro-genero {
+    flex: initial;
+    max-width: none;
+  }
 }
