@@ -1,21 +1,26 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import BuscaFilmes from './components/BuscaFilmes.jsx'
 import FiltroFavoritos from './components/FiltroFavoritos.jsx'
 import FiltroGenero from './components/FiltroGenero.jsx'
 import ListaFilmes from './components/ListaFilmes.jsx'
 import { filmes } from './data/filmes.js'
+import { carregarFavoritos, salvarFavoritos } from './utils/favoritosStorage.js'
 
 const generos = [...new Set(filmes.map((filme) => filme.genero))].sort((a, b) =>
   a.localeCompare(b, 'pt-BR'),
 )
 
 export default function App() {
-  const [favoritos, setFavoritos] = useState([])
+  const [favoritos, setFavoritos] = useState(carregarFavoritos)
   const [generoSelecionado, setGeneroSelecionado] = useState('')
   const [somenteFavoritos, setSomenteFavoritos] = useState(false)
   const [textoBusca, setTextoBusca] = useState('')
   const [termoBusca, setTermoBusca] = useState('')
   const tituloCatalogoRef = useRef(null)
+
+  useEffect(() => {
+    salvarFavoritos(favoritos)
+  }, [favoritos])
 
   const termoNormalizado = termoBusca.toLocaleLowerCase('pt-BR')
 

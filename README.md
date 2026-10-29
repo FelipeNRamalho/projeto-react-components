@@ -2,7 +2,7 @@
 
 Projeto de estudo em **React para web**: um catálogo de filmes com filtros e favoritos, desenvolvido para praticar os conceitos básicos da biblioteca.
 
-> **Status:** primeira versão implementada e T01 concluída, com formulário de busca por título combinado aos filtros de gênero e favoritos. A interface inclui mensagens de lista vazia, adaptação para telas pequenas e cuidados com navegação por teclado.
+> **Status:** primeira versão, T01 e T02 concluídas, com busca por título combinada aos filtros e favoritos persistidos no navegador. A interface inclui mensagens de lista vazia, adaptação para telas pequenas e cuidados com navegação por teclado.
 
 ## Objetivo
 
@@ -13,6 +13,7 @@ Criar uma aplicação simples, com uma única página, que permita explorar film
 - Exibir cards com pôster, título, gênero e ano de lançamento.
 - Pesquisar por título ao enviar o formulário, inclusive com Enter, e limpar apenas a busca.
 - Adicionar e remover filmes dos favoritos.
+- Restaurar os favoritos ao recarregar a página usando `localStorage`.
 - Filtrar os filmes por gênero, incluindo a opção de exibir todos.
 - Alternar entre o catálogo completo e apenas os favoritos.
 - Exibir uma mensagem quando nenhum filme corresponder aos filtros.
@@ -32,6 +33,7 @@ O filtro de gênero também será aplicado à visualização de favoritos.
 | **Listas** | Renderizar os filmes com `.map()`, usando o identificador de cada filme como `key`. |
 | **Renderização condicional** | Alterar a indicação de favorito e mostrar mensagens quando a lista estiver vazia. |
 | **Estado com `useState`** | Controlar os favoritos, os filtros, o texto digitado e o termo de busca aplicado. |
+| **Efeitos com `useEffect`** | Sincronizar os favoritos com o `localStorage` quando a seleção muda. |
 | **Formulários controlados** | Manter o campo de busca sincronizado com o estado e tratar o envio com `onSubmit` e `preventDefault`. |
 
 ## Tecnologias
@@ -58,7 +60,7 @@ Cada etapa reúne uma mudança que pode ser revisada e commitada separadamente.
 
 O planejamento da próxima versão está em [TASKS.md](./TASKS.md), com tarefas em ordem de execução, critérios de conclusão e uma sugestão de commit para cada entrega.
 
-A T01, busca por título, está concluída. As próximas tarefas incluem persistência local, páginas com React Router e avaliações por formulário. Depois, adicionam consumo de API, estados de carregamento e tratamento de erros. As tarefas restantes continuam pendentes.
+T01 (busca por título) e T02 (persistência dos favoritos) estão concluídas. As próximas tarefas incluem páginas com React Router, avaliações por formulário e sua persistência. Depois, adicionam consumo de API, estados de carregamento e tratamento de erros. As tarefas restantes continuam pendentes.
 
 ## Estrutura de pastas
 
@@ -81,6 +83,8 @@ src/
     filmes.js       # Array local com os dados dos filmes
   styles/
     global.css      # Estilos globais da aplicação
+  utils/
+    favoritosStorage.js # Leitura, validação e gravação dos favoritos
   App.jsx           # Componente principal
   main.jsx          # Entrada do React e montagem no DOM
 .gitignore
@@ -128,7 +132,11 @@ O `App` mantém os identificadores dos filmes favoritos em um estado criado com 
 
 O estado e a função são passados por props para `ListaFilmes` e `CardFilme`. Ao clicar no botão **Favorito**, o coração e as cores do botão mudam conforme a seleção. O atributo `aria-pressed` informa o estado aos leitores de tela, e o botão pode ser acionado pelo teclado.
 
-Os favoritos ficam apenas na memória e são reiniciados ao recarregar a página.
+Os favoritos são restaurados pelo inicializador do `useState`, passando a função `carregarFavoritos` sem executá-la a cada renderização. Um `useEffect` com a dependência `[favoritos]` grava a seleção sempre que ela muda. Assim, a leitura acontece antes da primeira gravação e evita substituir os favoritos salvos por um array vazio.
+
+As funções de armazenamento estão em `src/utils/favoritosStorage.js`. A chave `catalogo-filmes:favoritos` contém um array JSON com os IDs, como `[1, 3]`. A leitura aceita apenas IDs presentes no catálogo e remove repetições. JSON inválido ou um valor que não seja um array resulta em uma seleção vazia.
+
+Se o navegador bloquear o armazenamento ou não houver espaço para gravar, a aplicação continua permitindo marcar e desmarcar filmes em memória. Nesse caso, as mudanças podem não ser preservadas após recarregar. A persistência é local ao navegador e à origem da aplicação.
 
 ## Busca por título
 
@@ -172,7 +180,7 @@ Em telas pequenas, os filtros ficam empilhados e ocupam a largura disponível. A
 5. O contador informa a quantidade de filmes que correspondem aos filtros.
 6. Se a lista estiver vazia, uma mensagem explica a situação e oferece o botão para voltar ao catálogo completo.
 
-Na primeira versão, os favoritos e filtros ficarão apenas na memória da aplicação e serão reiniciados ao recarregar a página.
+Os favoritos são persistidos no navegador. Os filtros e a busca continuam apenas em memória e são reiniciados ao recarregar a página.
 
 ## Como executar
 
