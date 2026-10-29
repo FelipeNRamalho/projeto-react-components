@@ -2,7 +2,7 @@
 
 Projeto de estudo em **React para web**: um catálogo de filmes com filtros e favoritos, desenvolvido para praticar os conceitos básicos da biblioteca.
 
-> **Status:** catálogo com pôsteres implementado. A página lista seis filmes em cards com imagem, título, gênero e ano, organizados em uma grade responsiva. Favoritos e filtros serão adicionados nas próximas etapas.
+> **Status:** catálogo com pôsteres e favoritos implementado. A página lista seis filmes em uma grade responsiva e permite marcar ou desmarcar cada um como favorito. Os filtros serão adicionados na próxima etapa.
 
 ## Objetivo
 
@@ -47,7 +47,7 @@ Cada etapa reúne uma mudança que pode ser revisada e commitada separadamente.
 - [x] Estrutura inicial com React e Vite.
 - [x] Dados locais e listagem com `CardFilme` e `ListaFilmes` — JSX, componentes, props e `.map()`.
 - [x] Pôsteres dos filmes e apresentação visual dos cards.
-- [ ] Adicionar e remover favoritos com `useState` e indicação condicional no botão.
+- [x] Adicionar e remover favoritos com `useState` e indicação condicional no botão.
 - [ ] Filtrar por gênero e alternar a visualização de favoritos.
 - [ ] Mensagens de lista vazia e revisão de acessibilidade e responsividade.
 
@@ -105,7 +105,15 @@ Fontes das imagens, obtidas do servidor de imagens do TMDB:
 | `ListaFilmes` | Renderizar os filmes filtrados ou a mensagem de lista vazia. |
 | `CardFilme` | Exibir os dados de um filme e o botão de favoritar. |
 
-Cada filme possui um identificador único, título, gênero, ano de lançamento e caminho do pôster local. Os favoritos serão controlados pelos identificadores dos filmes.
+Cada filme possui um identificador único, título, gênero, ano de lançamento e caminho do pôster local. Os favoritos são controlados pelos identificadores dos filmes.
+
+## Favoritos
+
+O `App` mantém os identificadores dos filmes favoritos em um estado criado com `useState`. A função `alternarFavorito` adiciona ou remove um identificador usando a atualização funcional do estado, sem modificar o array anterior.
+
+O estado e a função são passados por props para `ListaFilmes` e `CardFilme`. Ao clicar no botão **Favorito**, o coração e as cores do botão mudam conforme a seleção. O atributo `aria-pressed` informa o estado aos leitores de tela, e o botão pode ser acionado pelo teclado.
+
+Os favoritos ficam apenas na memória e são reiniciados ao recarregar a página. A opção de exibir apenas favoritos será implementada junto com os filtros.
 
 ## Fluxo de uso planejado
 
