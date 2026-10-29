@@ -41,6 +41,19 @@ img {
   color: #475569;
 }
 
+.app__filtros {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.app__resultados {
+  margin-bottom: 1.5rem;
+  color: #475569;
+}
+
 h1 {
   margin-top: 0;
   line-height: 1.2;

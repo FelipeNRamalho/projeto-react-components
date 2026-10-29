@@ -2,7 +2,7 @@
 
 Projeto de estudo em **React para web**: um catálogo de filmes com filtros e favoritos, desenvolvido para praticar os conceitos básicos da biblioteca.
 
-> **Status:** catálogo com pôsteres e favoritos implementado. A página lista seis filmes em uma grade responsiva e permite marcar ou desmarcar cada um como favorito. Os filtros serão adicionados na próxima etapa.
+> **Status:** catálogo com pôsteres, favoritos e filtros implementado. É possível combinar o gênero selecionado com a opção de mostrar apenas favoritos. A próxima etapa será adicionar mensagens de lista vazia e revisar acessibilidade e responsividade.
 
 ## Objetivo
 
@@ -48,7 +48,7 @@ Cada etapa reúne uma mudança que pode ser revisada e commitada separadamente.
 - [x] Dados locais e listagem com `CardFilme` e `ListaFilmes` — JSX, componentes, props e `.map()`.
 - [x] Pôsteres dos filmes e apresentação visual dos cards.
 - [x] Adicionar e remover favoritos com `useState` e indicação condicional no botão.
-- [ ] Filtrar por gênero e alternar a visualização de favoritos.
+- [x] Filtrar por gênero e alternar a visualização de favoritos.
 - [ ] Mensagens de lista vazia e revisão de acessibilidade e responsividade.
 
 ## Estrutura de pastas
@@ -61,6 +61,9 @@ src/
   components/
     CardFilme.jsx   # Dados e apresentação de cada filme
     CardFilme.css
+    FiltroGenero.jsx    # Seleção de gênero
+    FiltroFavoritos.jsx # Opção de mostrar apenas favoritos
+    Filtros.css         # Estilos dos controles de filtro
     ListaFilmes.jsx # Lista de cards renderizada com .map()
     ListaFilmes.css
   data/
@@ -113,15 +116,25 @@ O `App` mantém os identificadores dos filmes favoritos em um estado criado com 
 
 O estado e a função são passados por props para `ListaFilmes` e `CardFilme`. Ao clicar no botão **Favorito**, o coração e as cores do botão mudam conforme a seleção. O atributo `aria-pressed` informa o estado aos leitores de tela, e o botão pode ser acionado pelo teclado.
 
-Os favoritos ficam apenas na memória e são reiniciados ao recarregar a página. A opção de exibir apenas favoritos será implementada junto com os filtros.
+Os favoritos ficam apenas na memória e são reiniciados ao recarregar a página.
 
-## Fluxo de uso planejado
+## Filtros
+
+O `App` controla o gênero selecionado e a opção de mostrar apenas favoritos com `useState`. Os componentes `FiltroGenero` e `FiltroFavoritos` recebem os valores e as funções de atualização por props, mantendo os controles sincronizados com o estado.
+
+Os gêneros são extraídos do array de filmes, sem repetições e em ordem alfabética. A opção **Todos os gêneros** remove a restrição de gênero.
+
+A lista exibida é calculada com `.filter()`, combinando os dois critérios. Trocar os filtros preserva os favoritos já marcados. Ao desmarcar um filme na visualização de favoritos, ele sai imediatamente da lista.
+
+O título identifica a visualização atual, e um contador informa a quantidade de resultados. Mensagens específicas para listas vazias serão adicionadas na próxima etapa.
+
+## Fluxo de uso
 
 1. Ao abrir a página, o usuário visualiza todos os filmes cadastrados.
 2. Pode selecionar um gênero para filtrar o catálogo.
 3. Pode marcar ou desmarcar um filme como favorito pelo card.
 4. Ao ativar a opção de favoritos, a lista mostra apenas os filmes marcados que correspondem ao gênero selecionado.
-5. Quando não houver resultados, a interface apresenta uma mensagem explicativa.
+5. O contador informa a quantidade de filmes que correspondem aos filtros.
 
 Na primeira versão, os favoritos e filtros ficarão apenas na memória da aplicação e serão reiniciados ao recarregar a página.
 
