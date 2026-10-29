@@ -7,13 +7,20 @@ export default function ListaFilmes({
   onAlternarFavorito,
   somenteFavoritos,
   generoSelecionado,
+  termoBusca,
   onLimparFiltros,
 }) {
   if (filmes.length === 0) {
     let titulo = 'Nenhum filme encontrado'
     let descricao = 'Tente outro gênero ou volte ao catálogo completo.'
 
-    if (somenteFavoritos) {
+    if (termoBusca) {
+      titulo = somenteFavoritos
+        ? 'Nenhum favorito encontrado para esta busca'
+        : 'Nenhum filme encontrado para esta busca'
+      descricao =
+        'Tente outro título, ajuste os filtros ou volte ao catálogo completo.'
+    } else if (somenteFavoritos) {
       titulo = generoSelecionado
         ? 'Nenhum favorito neste gênero'
         : 'Você ainda não tem favoritos'

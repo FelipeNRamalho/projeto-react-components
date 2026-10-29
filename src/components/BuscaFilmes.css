@@ -1,0 +1,77 @@
+.busca-filmes {
+  margin-bottom: 1.5rem;
+}
+
+.busca-filmes__label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.busca-filmes__controles {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 0.75rem;
+}
+
+.busca-filmes__input,
+.busca-filmes__controles button {
+  min-height: 44px;
+  padding: 0.625rem 1rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+}
+
+.busca-filmes__input {
+  min-width: 0;
+  width: 100%;
+  color: #1e293b;
+  background-color: #fff;
+}
+
+.busca-filmes__controles button {
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.busca-filmes__controles .busca-filmes__buscar {
+  border-color: #4f46e5;
+  color: #fff;
+  background-color: #4f46e5;
+}
+
+.busca-filmes__controles .busca-filmes__buscar:hover {
+  background-color: #4338ca;
+}
+
+.busca-filmes__limpar {
+  color: #475569;
+  background-color: #fff;
+}
+
+.busca-filmes__limpar:hover:not(:disabled) {
+  background-color: #eef2ff;
+}
+
+.busca-filmes__limpar:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.busca-filmes__input:focus-visible,
+.busca-filmes__controles button:focus-visible {
+  outline: 3px solid #4f46e5;
+  outline-offset: 3px;
+}
+
+.busca-filmes__ajuda {
+  margin: 0.5rem 0 0;
+  color: #475569;
+  font-size: 0.875rem;
+}
+
+@media (max-width: 560px) {
+  .busca-filmes__controles {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

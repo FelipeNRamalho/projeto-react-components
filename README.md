@@ -2,7 +2,7 @@
 
 Projeto de estudo em **React para web**: um catálogo de filmes com filtros e favoritos, desenvolvido para praticar os conceitos básicos da biblioteca.
 
-> **Status:** primeira versão implementada, com catálogo, pôsteres, favoritos, filtros combinados e mensagens de lista vazia. A interface inclui adaptação para telas pequenas e cuidados com navegação por teclado.
+> **Status:** primeira versão implementada e T01 concluída, com formulário de busca por título combinado aos filtros de gênero e favoritos. A interface inclui mensagens de lista vazia, adaptação para telas pequenas e cuidados com navegação por teclado.
 
 ## Objetivo
 
@@ -11,6 +11,7 @@ Criar uma aplicação simples, com uma única página, que permita explorar film
 ## Funcionalidades
 
 - Exibir cards com pôster, título, gênero e ano de lançamento.
+- Pesquisar por título ao enviar o formulário, inclusive com Enter, e limpar apenas a busca.
 - Adicionar e remover filmes dos favoritos.
 - Filtrar os filmes por gênero, incluindo a opção de exibir todos.
 - Alternar entre o catálogo completo e apenas os favoritos.
@@ -30,7 +31,8 @@ O filtro de gênero também será aplicado à visualização de favoritos.
 | **Virtual DOM e reconciliação** | Entender como o React compara as representações da interface e aplica as alterações necessárias ao DOM quando o estado muda. |
 | **Listas** | Renderizar os filmes com `.map()`, usando o identificador de cada filme como `key`. |
 | **Renderização condicional** | Alterar a indicação de favorito e mostrar mensagens quando a lista estiver vazia. |
-| **Estado com `useState`** | Controlar os favoritos, o gênero selecionado e a opção de mostrar apenas favoritos. |
+| **Estado com `useState`** | Controlar os favoritos, os filtros, o texto digitado e o termo de busca aplicado. |
+| **Formulários controlados** | Manter o campo de busca sincronizado com o estado e tratar o envio com `onSubmit` e `preventDefault`. |
 
 ## Tecnologias
 
@@ -52,6 +54,12 @@ Cada etapa reúne uma mudança que pode ser revisada e commitada separadamente.
 - [x] Filtrar por gênero e alternar a visualização de favoritos.
 - [x] Mensagens de lista vazia e revisão de acessibilidade e responsividade.
 
+## Próximas etapas
+
+O planejamento da próxima versão está em [TASKS.md](./TASKS.md), com tarefas em ordem de execução, critérios de conclusão e uma sugestão de commit para cada entrega.
+
+A T01, busca por título, está concluída. As próximas tarefas incluem persistência local, páginas com React Router e avaliações por formulário. Depois, adicionam consumo de API, estados de carregamento e tratamento de erros. As tarefas restantes continuam pendentes.
+
 ## Estrutura de pastas
 
 ```text
@@ -60,6 +68,8 @@ public/
 src/
   assets/           # Imagens e outros arquivos importados pelos componentes
   components/
+    BuscaFilmes.jsx # Formulário controlado de busca por título
+    BuscaFilmes.css
     CardFilme.jsx   # Dados e apresentação de cada filme
     CardFilme.css
     FiltroGenero.jsx    # Seleção de gênero
@@ -104,6 +114,7 @@ Fontes das imagens, obtidas do servidor de imagens do TMDB:
 | Componente | Responsabilidade |
 | --- | --- |
 | `App` | Manter o estado e reunir os componentes da página. |
+| `BuscaFilmes` | Controlar a entrada por props e oferecer envio e limpeza da busca. |
 | `FiltroGenero` | Permitir a seleção do gênero. |
 | `FiltroFavoritos` | Controlar a exibição de apenas favoritos. |
 | `ListaFilmes` | Renderizar os filmes filtrados ou a mensagem de lista vazia. |
@@ -119,13 +130,21 @@ O estado e a função são passados por props para `ListaFilmes` e `CardFilme`. 
 
 Os favoritos ficam apenas na memória e são reiniciados ao recarregar a página.
 
+## Busca por título
+
+O componente `BuscaFilmes` recebe o texto digitado e as ações por props. O `App` mantém dois estados: `textoBusca`, atualizado enquanto o usuário digita, e `termoBusca`, aplicado somente ao enviar o formulário pelo botão **Buscar** ou pela tecla Enter. O `preventDefault` evita o recarregamento da página.
+
+A busca encontra trechos do título, ignora maiúsculas, minúsculas e espaços nas extremidades e combina o termo aplicado com gênero e favoritos. O contador também informa o termo aplicado, mesmo se o usuário estiver digitando uma nova pesquisa.
+
+Enviar uma busca vazia remove apenas a restrição por título. O botão **Limpar busca** apaga tanto o texto digitado quanto o termo aplicado, preserva gênero e favoritos e devolve o foco ao campo de pesquisa.
+
 ## Filtros
 
 O `App` controla o gênero selecionado e a opção de mostrar apenas favoritos com `useState`. Os componentes `FiltroGenero` e `FiltroFavoritos` recebem os valores e as funções de atualização por props, mantendo os controles sincronizados com o estado.
 
 Os gêneros são extraídos do array de filmes, sem repetições e em ordem alfabética. A opção **Todos os gêneros** remove a restrição de gênero.
 
-A lista exibida é calculada com `.filter()`, combinando os dois critérios. Trocar os filtros preserva os favoritos já marcados. Ao desmarcar um filme na visualização de favoritos, ele sai imediatamente da lista.
+A lista exibida é calculada com `.filter()`, combinando gênero, favoritos e o termo de busca aplicado. Trocar os filtros preserva os favoritos já marcados. Ao desmarcar um filme na visualização de favoritos, ele sai imediatamente da lista.
 
 O título identifica a visualização atual, e um contador informa a quantidade de resultados.
 
@@ -136,8 +155,9 @@ A `ListaFilmes` usa renderização condicional para substituir a grade por uma m
 - **Você ainda não tem favoritos:** a visualização de favoritos está ativa, sem filmes marcados.
 - **Nenhum favorito neste gênero:** não há favoritos que correspondam ao gênero selecionado.
 - **Nenhum filme encontrado:** não há filmes para os demais critérios de exibição.
+- **Nenhum filme encontrado para esta busca** ou **Nenhum favorito encontrado para esta busca:** o termo aplicado não tem resultados na combinação atual de filtros.
 
-O botão **Ver todos os filmes** limpa os dois filtros, preserva os favoritos e leva o foco ao título do catálogo. Ao remover um filme na visualização de favoritos, o foco também vai para esse título, pois o botão do card sai da página. O `useRef` permite acessar esse elemento sem criar um novo estado.
+O botão **Ver todos os filmes** limpa gênero, visualização de favoritos e busca (texto digitado e termo aplicado), preserva os favoritos e leva o foco ao título do catálogo. Ao remover um filme na visualização de favoritos, o foco também vai para esse título, pois o botão do card sai da página. O `useRef` permite acessar esse elemento sem criar um novo estado.
 
 Os controles possuem rótulos, foco visível e acionamento por teclado. O contador usa `role="status"` para anunciar alterações, os pôsteres possuem texto alternativo e cada card é identificado por seu título. A lista mantém seu papel semântico mesmo com os marcadores ocultos.
 
@@ -146,7 +166,7 @@ Em telas pequenas, os filtros ficam empilhados e ocupam a largura disponível. A
 ## Fluxo de uso
 
 1. Ao abrir a página, o usuário visualiza todos os filmes cadastrados.
-2. Pode selecionar um gênero para filtrar o catálogo.
+2. Pode enviar uma busca por título e selecionar um gênero para filtrar o catálogo.
 3. Pode marcar ou desmarcar um filme como favorito pelo card.
 4. Ao ativar a opção de favoritos, a lista mostra apenas os filmes marcados que correspondem ao gênero selecionado.
 5. O contador informa a quantidade de filmes que correspondem aos filtros.

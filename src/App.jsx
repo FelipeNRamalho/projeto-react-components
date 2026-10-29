@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react'
+import BuscaFilmes from './components/BuscaFilmes.jsx'
 import FiltroFavoritos from './components/FiltroFavoritos.jsx'
 import FiltroGenero from './components/FiltroGenero.jsx'
 import ListaFilmes from './components/ListaFilmes.jsx'
@@ -12,16 +13,32 @@ export default function App() {
   const [favoritos, setFavoritos] = useState([])
   const [generoSelecionado, setGeneroSelecionado] = useState('')
   const [somenteFavoritos, setSomenteFavoritos] = useState(false)
+  const [textoBusca, setTextoBusca] = useState('')
+  const [termoBusca, setTermoBusca] = useState('')
   const tituloCatalogoRef = useRef(null)
+
+  const termoNormalizado = termoBusca.toLocaleLowerCase('pt-BR')
 
   const filmesFiltrados = filmes.filter((filme) => {
     const correspondeAoGenero =
       generoSelecionado === '' || filme.genero === generoSelecionado
     const correspondeAosFavoritos =
       !somenteFavoritos || favoritos.includes(filme.id)
+    const correspondeAoTitulo = filme.titulo
+      .toLocaleLowerCase('pt-BR')
+      .includes(termoNormalizado)
 
-    return correspondeAoGenero && correspondeAosFavoritos
+    return correspondeAoGenero && correspondeAosFavoritos && correspondeAoTitulo
   })
+
+  function buscarFilmes() {
+    setTermoBusca(textoBusca.trim())
+  }
+
+  function limparBusca() {
+    setTextoBusca('')
+    setTermoBusca('')
+  }
 
   function alternarFavorito(filmeId) {
     setFavoritos((favoritosAtuais) =>
@@ -38,6 +55,7 @@ export default function App() {
   function limparFiltros() {
     setGeneroSelecionado('')
     setSomenteFavoritos(false)
+    limparBusca()
     tituloCatalogoRef.current?.focus()
   }
 
@@ -47,6 +65,14 @@ export default function App() {
         <h1>Catálogo de Filmes</h1>
         <p>Descubra histórias para a sua próxima sessão de cinema.</p>
       </header>
+
+      <BuscaFilmes
+        textoBusca={textoBusca}
+        termoBusca={termoBusca}
+        onAlterarTextoBusca={setTextoBusca}
+        onBuscar={buscarFilmes}
+        onLimparBusca={limparBusca}
+      />
 
       <div className="app__filtros" role="group" aria-label="Filtros do catálogo">
         <FiltroGenero
@@ -73,6 +99,12 @@ export default function App() {
           {filmesFiltrados.length === 1
             ? '1 filme encontrado'
             : `${filmesFiltrados.length} filmes encontrados`}
+          {termoBusca && (
+            <>
+              {' para '}
+              <strong>“{termoBusca}”</strong>
+            </>
+          )}
         </p>
         <ListaFilmes
           filmes={filmesFiltrados}
@@ -80,6 +112,7 @@ export default function App() {
           onAlternarFavorito={alternarFavorito}
           somenteFavoritos={somenteFavoritos}
           generoSelecionado={generoSelecionado}
+          termoBusca={termoBusca}
           onLimparFiltros={limparFiltros}
         />
       </section>
